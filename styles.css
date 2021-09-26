@@ -1,3 +1,7 @@
+:root {
+    --sky:rgb(97, 178, 224);
+    --sun:rgb(250, 220, 85);
+}
 header {
     margin-top: 0;
     width: 100%;
@@ -5,21 +9,41 @@ header {
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center center;
-    box-shadow: 0px 0px 8px rgb(137, 207, 248);
-    border-radius: 10px;
+    box-shadow: 0px 0px 10px var(--sky);
+    margin-bottom: 15px;
 }
+
 header h1 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: white;
+    font-weight: bold;
     font-size: 3rem;
     text-align: center;
     width: 100%;
-    margin-top: 0px;
     margin-block-start: 0;
     padding: 5px;
+   
 }
 .head {
     font-family: 'Ephesis', cursive;
-    color: rgb(250, 220, 85);
+    color: var(--sun);
+    font-weight: normal;
     font-size: 6rem;
+}
+.custom-btn {
+    background-color: var(--sky);
+    color:white;
+}
+
+h3 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    width:50%;
+    color: white;
+    background-color:var(--sky);
+    padding: 5px;
+    border-radius: 15px;
+}
+.headThree {
+    color: var(--sun);   
 }

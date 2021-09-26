@@ -5,14 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Ephesis&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles.css">
     <title>Weather Dashboard</title>
 </head>
 <body>
     <header>
-        <h1><span class="head">Weather</span> Dashboard</h1>
+        <h1><span class="head">Weather </span> Dashboard</h1>
     </header>
-    
+
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <form class="d-flex">
+                <a class="navbar-brand">Enter City Name</a>
+                <input id="userCity" class="form-control me-2 mb-3" type="search" placeholder="e.g Melbourne" aria-label="Search">
+                <button id="searchBtn" class="btn custom-btn me-2 mb-3" type="submit">Search</button>
+                <button id="clearHistory" class="btn btn-outline-secondary btn-sm mb-3" type="button">Clear</button>
+            </form>
+            <div id="historyDiv"></div>
+        </div>
+    </nav>
+
+         <h3><span class="headThree">5 Day </span> Forecast</h3>
     <script scr="./script.js"></script>
 </body>
 </html>
