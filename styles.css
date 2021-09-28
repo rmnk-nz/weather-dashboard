@@ -5,7 +5,7 @@
 header {
     margin-top: 0;
     width: 100%;
-    background-image: url(/images/sky-5534319_1280.jpg);
+    background-image: url(./images/sky-5534319_1280.jpg);
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center center;
@@ -28,15 +28,12 @@ h1 {
     font-weight: normal;
     font-size: 6rem;
 }
+
 .custom-btn {
     background-color: var(--sky);
     color:white;
 }
-main {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
+
 #userInfo {
     width: 60%;
     padding: 10px;
@@ -44,27 +41,25 @@ main {
     box-shadow: 0px 0px 10px var(--sky);
 }
 h4 {
-    margin-bottom: 0;
     text-align: center;
 }
-.info {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
+
 h3 {
     margin-left: 50px;
     margin-bottom: -25px;
 }
+
 #head3 {
     font-family: 'Ephesis', cursive;
     font-size: 4rem;
     color: var(--sky);
 }
+
 #fiveDay {
     align-content: center;
     padding: 10px
 }
+
 .forecast {
     background-image: linear-gradient(var(--sky),white);
     border-radius: 15px 15px 0 0;

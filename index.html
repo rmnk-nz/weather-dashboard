@@ -23,26 +23,19 @@
                 <button id="searchBtn" class="btn custom-btn me-2 mb-3" type="submit">Search</button>
                 <button id="clearHistory" class="btn btn-outline-secondary btn-sm mb-3" type="button">Clear</button>
             </form>
-            <div id="historyDiv"></div>
+            <div id="historyDiv">
+                <!--use this div append user history-->
+            </div>
         </div>
     </nav>
 
     <section class="container" id="userInfo">
         <div class="row">
-            <div class="col-6">
-                <h2 class="cityName"></h2>
-                <p id="currentDate"></p>
-                <img class="weatherImg" src="placeholder" alt="">
+            <div class="col-6" id="weatherTitle">
+               <!--use this div to show city name/date/img-->
             </div>
-            <div class="col">
-                <h4>Temperature:</h4>
-                <div class="cityTemp info"></div>
-                <h4>Humidity:</h4>
-                <div class="humidity info"></div>
-                <h4>Wind-Speed:</h4>
-                <div class="windSpeed info"></div>
-                <h4>UV-Index:</h4>
-                <div class="uvIndex info"></div>
+            <div class="col" id="currentWeather">
+                <!--use this div to show current temp/humidity/wind speed/uv index-->
             </div>
         </div>
     </section>
@@ -59,6 +52,7 @@
         </div>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script scr="./script.js"></script>
 </body>
 </html>
