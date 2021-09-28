@@ -13,23 +13,17 @@ function inputHandler(event) {
     var userCity = userInput.value.trim();
 
     if (userCity) {
-        getUserData(userCity);
+      getLocationInfo(userCity); 
     } else {
         alert('please enter city name');
     }
 };
+
 //function to select users pervious searches
 
-//function to clear all saved searches from user
-function clearSearches() { 
-  //clear local data storage and refresh page
-  localStorage.clear();
-  window.location.replace('./index.htm');
-  
-};
 
-//function to fetch  required data from selected api
-function getUserData (userInput) {
+//function to fetch required data from selected api
+function getLocationInfo (userInput) {
     var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + userInput.toLowerCase() + '&appid=' + apiKey + '&units=metric';
 
     fetch(apiUrl)
@@ -37,11 +31,13 @@ function getUserData (userInput) {
       if (response.ok) {
         response.json()
         .then(function (data) {
+          console.log(data);
           displayWeather(data);
+          getUvIndex(data);
         })
         .catch(function(error){
-            console.log('error: invalid json')
-        });
+        console.log('error: invalid json')
+      });
       } else {
         alert('Error: ' + response.statusText);
       }
@@ -53,7 +49,9 @@ function getUserData (userInput) {
 
 //function to render through the fetched data and append to page
 function displayWeather(data) {
-  console.log(data);
+    console.log(data);
+  weatherTitle.textContent = "";
+  currentWeather.textContent = "";
 
   //append city name
   var city = document.createElement('h2');
@@ -86,19 +84,56 @@ function displayWeather(data) {
   wind.textContent = 'Wind Speed: ' + data.wind.speed + "m/sec";
   currentWeather.appendChild(wind);
 
-  //append uv-index
-  
-  
   // button style to be dynamicly applied for the user saved search history
   /* <button type="button" class="btn btn-secondary mb-3 me-3"></button> */
-  // var searchedEl = document.createElement('button');
-  // searchedEl.classList = 'btn btn-secondary mb-3 me-3';
-  // searchedEl.textContent = city;
-  // historyDiv.appendChild(searchedEl);
+  var searchedEl = document.createElement('button');
+  searchedEl.classList = 'btn btn-secondary mb-3 me-3';
+  searchedEl.textContent = data.name;
+  historyDiv.appendChild(searchedEl);
 };
 
+//function to get UV index
+function getUvIndex(data) {
+  var lat = data.coord.lat;
+  var lon = data.coord.lon;
+  var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&appid=" + apiKey + "&units=metric";
+
+  fetch(apiUrl)
+  .then(function(response){
+    if (response.ok) {
+        response.json()
+      .then (function (data) {
+        //create element to display UV index
+        var uvIndexEl = document.createElement('h4');
+        uvIndexEl.textContent = 'UV Index: ' + data.current.uvi;
+        //if else condition to apply attribute depending on current UV index
+          if (data.current.uvi <= 2) {
+            uvIndexEl.setAttribute('class', 'low');
+        } else if (data.current.uvi > 2 || data.current.uvi < 6) {
+            uvIndexEl.setAttribute('class', 'medium');
+        } else {
+            uvIndexEl.setAttribute('class', 'high');
+        }
+        currentWeather.appendChild(uvIndexEl);
+      })
+    } else {
+        alert('Error: ' + response.statusText);
+      }
+  });
+};
+
+
+//function to clear all saved searches from user
+function clearSearches() { 
+  //clear local data storage and refresh page
+  localStorage.clear();
+  window.location.replace('./index.html');
+  
+};
+
+
 //when user clicks the search button, will start seach for the users input
-searchBtn.addEventListener('submit', inputHandler);
+searchBtn.addEventListener('click', inputHandler);
 
 //clears all pervious searches from user
 clearBtn.addEventListener('click', clearSearches);

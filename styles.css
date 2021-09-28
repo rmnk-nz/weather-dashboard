@@ -2,6 +2,7 @@
     --sky:rgb(97, 178, 224);
     --sun:rgb(250, 220, 85);
 }
+
 header {
     margin-top: 0;
     width: 100%;
@@ -36,11 +37,33 @@ h1 {
 
 #userInfo {
     width: 60%;
-    padding: 10px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0px 0px 10px var(--sky);
+    background-color: var(--sky);
+    color: white;
+    
 }
+.low {
+    background-color: rgb(0, 184, 0);
+    padding: 5px;
+    border-radius: 15px;
+}
+.medium {
+    background-color: orange;
+    padding: 5px;
+    border-radius: 15px;
+   
+    
+}
+.high {
+    background-color: red;
+    padding: 5px;
+    border-radius: 15px;
+}
+
 h4 {
+    margin-bottom: 2rem;
     text-align: center;
 }
 
