@@ -2,8 +2,10 @@ var userInput = document.querySelector('#userCity');
 var searchBtn = document.querySelector('#searchBtn');
 var clearBtn = document.querySelector('#clearHistory');
 var historyDiv = document.querySelector('#historyDiv');
-var weatherTitle = document.querySelector('#weatherTitle');
-var currentWeather = document.querySelector('#currentWeather');
+var weatherDisplay = document.querySelector('.weatherDisplay')
+var weatherTitle = document.querySelector('.weatherTitle');
+var currentWeather = document.querySelector('.currentWeather');
+var forecastDiv = document.querySelector('#fiveDay');
 var apiKey = '2a270cc981b828921936d857f8ccd07d';
 
 //function to get users input
@@ -52,6 +54,8 @@ function displayWeather(data) {
     console.log(data);
   weatherTitle.textContent = "";
   currentWeather.textContent = "";
+
+  weatherDisplay.setAttribute('id', 'userInfo');
 
   //append city name
   var city = document.createElement('h2');
@@ -103,7 +107,8 @@ function getUvIndex(data) {
     if (response.ok) {
         response.json()
       .then (function (data) {
-        //create element to display UV index
+        displayForecast(data);
+        //create element to display UV index 
         var uvIndexEl = document.createElement('h4');
         uvIndexEl.textContent = 'UV Index: ' + data.current.uvi;
         //if else condition to apply attribute depending on current UV index
@@ -122,13 +127,51 @@ function getUvIndex(data) {
   });
 };
 
+//function to display 5 day
+function displayForecast (weather) {
+  forecastDiv.textContent = '';
+
+  var forecastTitle = document.createElement('h3');
+  forecastTitle.textContent = '5 day Forecast';
+  forecastDiv.appendChild(forecastTitle);
+ 
+  for (i = 1; i < 6; i++) {
+    //attribute to applied to forecast elements <div class="col forecast"></div>
+    var forecastEl = document.createElement('div');
+    forecastEl.classList = "col forecast";
+
+    var forecastWeather = weather.daily[i];
+    var date = moment.unix(forecastWeather.dt).format('DD/MM/YYYY');
+
+    var displayDate = document.createElement('h5');
+    displayDate.textContent = date;
+    forecastEl.appendChild(displayDate);
+
+    var displayImg = document.createElement('img');
+    displayImg.src = 'http://openweathermap.org/img/wn/' + forecastWeather.weather[0].icon + '@2x.png';
+    forecastEl.appendChild(displayImg);
+    
+    var displayTemp = document.createElement('h5');
+    displayTemp.textContent = 'Temp: ' + forecastWeather.temp.max + '\u00B0C';
+    forecastEl.appendChild(displayTemp);
+    
+    var displayWind = document.createElement('h5');
+    displayWind.textContent = 'Wind: ' + forecastWeather.wind_speed + 'm/sec';
+    forecastEl.appendChild(displayWind);
+
+    var displayHumid = document.createElement('h5');
+    displayHumid.textContent = 'Humidity: ' + forecastWeather.humidity + '%';
+    forecastEl.appendChild(displayHumid);
+
+    forecastDiv.appendChild(forecastEl);
+  }
+};
 
 //function to clear all saved searches from user
 function clearSearches() { 
   //clear local data storage and refresh page
   localStorage.clear();
-  window.location.replace('./index.html');
-  
+  window.location.replace('./index.html'); 
 };
 
 
