@@ -16,12 +16,12 @@ function inputHandler(event) {
 
     if (userCity) {
       getLocationInfo(userCity); 
+      userCity.textContent = '';
+    
     } else {
         alert('please enter city name');
     }
 };
-
-//function to select users pervious searches
 
 
 //function to fetch required data from selected api
@@ -33,9 +33,9 @@ function getLocationInfo (userInput) {
       if (response.ok) {
         response.json()
         .then(function (data) {
-          console.log(data);
           displayWeather(data);
           getUvIndex(data);
+          saveSearch(data);
         })
         .catch(function(error){
         console.log('error: invalid json')
@@ -52,6 +52,8 @@ function getLocationInfo (userInput) {
 //function to render through the fetched data and append to page
 function displayWeather(data) {
     console.log(data);
+    
+
   weatherTitle.textContent = "";
   currentWeather.textContent = "";
 
@@ -61,7 +63,7 @@ function displayWeather(data) {
   var city = document.createElement('h2');
   city.textContent = data.name;
   weatherTitle.appendChild(city);
-  
+
   //append current date
   var currentDate = moment(data.dt.value).format('DD-MM-YYYY');
   var day = document.createElement('p');
@@ -88,12 +90,6 @@ function displayWeather(data) {
   wind.textContent = 'Wind Speed: ' + data.wind.speed + "m/sec";
   currentWeather.appendChild(wind);
 
-  // button style to be dynamicly applied for the user saved search history
-  /* <button type="button" class="btn btn-secondary mb-3 me-3"></button> */
-  var searchedEl = document.createElement('button');
-  searchedEl.classList = 'btn btn-secondary mb-3 me-3';
-  searchedEl.textContent = data.name;
-  historyDiv.appendChild(searchedEl);
 };
 
 //function to get UV index
@@ -165,6 +161,30 @@ function displayForecast (weather) {
 
     forecastDiv.appendChild(forecastEl);
   }
+};
+
+//function to save users pervious searches
+function saveSearch(data) {
+  var savedCity = data.name;
+
+  var userHistory = localStorage.getItem('cityName');
+    if (userHistory === null) {
+      userHistory=[];
+    } else {
+      userHistory = Json.parse(userHistory);
+      console.log(userHistory);
+    }
+
+  userHistory.push(savedCity);
+  var addCity = JSON.stringify(userHistory);
+  localStorage.setItem('cityName', addCity);
+  
+  var searchedEl = document.createElement('button');
+  searchedEl.classList = 'btn btn-secondary mb-3 me-3';
+  searchedEl.setAttribute('type', 'submit');
+  searchedEl.textContent = savedCity;
+  console.log(searchedEl);
+  historyDiv.appendChild(searchedEl);
 };
 
 //function to clear all saved searches from user
