@@ -15,7 +15,7 @@ function inputHandler(event) {
     var userCity = userInput.value.trim();
 
     if (userCity) {
-      getLocationInfo(userCity); 
+      getLocationInfo(userCity);
       userCity.textContent = '';
     
     } else {
@@ -34,8 +34,8 @@ function getLocationInfo (userInput) {
         response.json()
         .then(function (data) {
           displayWeather(data);
+          saveSearch(data); 
           getUvIndex(data);
-          saveSearch(data);
         })
         .catch(function(error){
         console.log('error: invalid json')
@@ -93,7 +93,8 @@ function displayWeather(data) {
 };
 
 //function to get UV index
-function getUvIndex(data) {
+function getUvIndex(data) { 
+  //applie lat and lon to openweather onecall api to get UV index
   var lat = data.coord.lat;
   var lon = data.coord.lon;
   var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&appid=" + apiKey + "&units=metric";
@@ -170,33 +171,61 @@ function saveSearch(data) {
   var userHistory = localStorage.getItem('cityName');
     if (userHistory === null) {
       userHistory=[];
+      //will ensure that user search dosen't already exist
+    } else if (userHistory.indexOf(savedCity) != -1) {
+        return;
     } else {
-      userHistory = Json.parse(userHistory);
+      userHistory = JSON.parse(userHistory);
       console.log(userHistory);
     }
 
   userHistory.push(savedCity);
   var addCity = JSON.stringify(userHistory);
   localStorage.setItem('cityName', addCity);
-  
+  //creates button element for user search and append to history div
   var searchedEl = document.createElement('button');
   searchedEl.classList = 'btn btn-secondary mb-3 me-3';
-  searchedEl.setAttribute('type', 'submit');
+  searchedEl.setAttribute('cityInfo', savedCity);
   searchedEl.textContent = savedCity;
   console.log(searchedEl);
   historyDiv.appendChild(searchedEl);
+  
+  //add event listener so when user clicks button it will initiate sreach
+  searchedEl.addEventListener('click', function(event) {
+    var btnValue = event.target.getAttribute('cityInfo');
+    getLocationInfo(btnValue);
+    userCity.textContent = '';
+  });
 };
 
-//function to clear all saved searches from user
-function clearSearches() { 
-  //clear local data storage and refresh page
-  localStorage.clear();
-  window.location.replace('./index.html'); 
+//function to get past searches from local data and append to page
+function renderHistory () {
+  var pastSearches = JSON.parse(localStorage.getItem('cityName'));
+  if (pastSearches != null) {
+    for (var i=0; i < pastSearches.length; i++) {
+      var searchedEl = document.createElement('button');
+      searchedEl.classList = 'btn btn-secondary mb-3 me-3';
+      searchedEl.setAttribute('cityInfo', pastSearches[i]);
+      searchedEl.textContent = pastSearches[i];
+      historyDiv.appendChild(searchedEl);
+
+      //add event listener so when user clicks button it will initiate sreach
+      searchedEl.addEventListener('click', function(event) {
+        var btnValue = event.target.getAttribute('cityInfo');
+        getLocationInfo(btnValue);
+        userCity.textContent = '';
+        });
+    }
+  }   
 };
 
+renderHistory();
 
 //when user clicks the search button, will start seach for the users input
 searchBtn.addEventListener('click', inputHandler);
 
 //clears all pervious searches from user
-clearBtn.addEventListener('click', clearSearches);
+clearBtn.addEventListener('click', function () {
+  localStorage.clear();
+  window.location.replace('./index.html'); 
+});
